@@ -12,4 +12,4 @@ Or point to the ZIP file of a [specific release](https://github.com/totebo/defol
 ## Example
 
       local svg_to_coords = require "svg_to_coords.svg_to_coords"
-      local coordinates = svg_to_coords:read( "main/shape.svg" )
+      local coordinates = svg_to_coords:read( "main/shape.svg", position )

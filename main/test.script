@@ -3,8 +3,9 @@ local svg_to_coords = require "svg_to_coords.svg_to_coords"
 local coordinates
 
 function init(self)
-
-	coordinates = svg_to_coords:read( "main/Path.svg" )
+	
+	local position = go.get_position( "go" )	
+	coordinates = svg_to_coords:read( "game/Path.svg", position )
 
 end
 

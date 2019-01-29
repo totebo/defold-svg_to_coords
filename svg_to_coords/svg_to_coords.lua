@@ -16,22 +16,6 @@ local function load_file( filename )
 
 end
 
---[[
-local function parsePath(input)
-	-- Nabbed from: https://stackoverflow.com/questions/16863540/parse-svg-path-definition-d-in-lua
-	local out = {};
-
-	for instr, vals in input:gmatch("([a-df-zA-DF-Z])([^a-df-zA-DF-Z]*)") do
-		local line = { instr };
-		for v in vals:gmatch("([+-]?[%deE.]+)") do
-			line[#line+1] = v;
-		end
-		out[#out+1] = line;
-	end
-	return out;
-end
---]]
-
 local function split(s, delimiter)
 	result = {};
 	for match in (s..delimiter):gmatch("(.-)"..delimiter) do
@@ -48,8 +32,12 @@ end
 local xml2lua = require "svg_to_coords.xml2lua"
 local handler = require("svg_to_coords.xmlhandler.tree")
 
-function M:read( xml_filename )
+function M:read( xml_filename, position )
 
+	if position == nil then
+		position = vmath.vector3(0,0,0)
+	end
+	
 	-- Read xml
 	local xml = load_file( xml_filename )
 	local parser = xml2lua.parser(handler)
@@ -72,7 +60,7 @@ function M:read( xml_filename )
 	
 	-- Create coordinate table (with polyline)
 	local coordinates = {}	
-	local position = go.get_position( "go" )	
+
 	for i=1, #svg_data do
 		local coord = tonumber(svg_data[i])
 		if i%2~=0 then
