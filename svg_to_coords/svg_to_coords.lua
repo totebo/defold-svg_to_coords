@@ -2,26 +2,12 @@ local M = {}
 
 local insert = table.insert
 
-local function load_file( filename )
-
-	local str
-	local file = io.open(filename, "rb")
-
-	if file then
-		str = file:read("*all")
-		file:close()
-	end
-
-	return str
-
-end
-
 local function split(s, delimiter)
-	result = {};
+	local result = {}
 	for match in (s..delimiter):gmatch("(.-)"..delimiter) do
-		table.insert(result, match);
+		insert(result, match)
 	end
-	return result;
+	return result
 end
 
 local function stripchars(str, chrs)
@@ -30,36 +16,36 @@ local function stripchars(str, chrs)
 end
 
 local xml2lua = require "svg_to_coords.xml2lua"
-local handler = require("svg_to_coords.xmlhandler.tree")
+local tree = require("svg_to_coords.xmlhandler.tree")
+local handler = {}
 
 function M:read( xml_filename, position )
 
 	if position == nil then
 		position = vmath.vector3(0,0,0)
 	end
-	
+
 	-- Read xml
-	local xml = load_file( xml_filename )
+	local handler = tree:new()
 	local parser = xml2lua.parser(handler)
-	parser:parse(xml)
+	parser:parse(xml2lua.loadFile(xml_filename))
 
 	-- Read svg data
-	--local svg_data_raw = parser.handler.root.svg.g.g.polygon._attr.points
-	--local svg_data_raw = parser.handler.root.svg.g.g.path._attr.d	
 	local svg_data_raw = parser.handler.root.svg.g.g.polyline._attr.points
 	local svg_data = split(svg_data_raw," " )
+
 	local width = parser.handler.root.svg._attr.width:gsub('px', '')
-	local height = parser.handler.root.svg._attr.height:gsub('px', '')	
+	local height = parser.handler.root.svg._attr.height:gsub('px', '')
 	local origin = parser.handler.root.svg.g.g._attr.transform
 
 	-- Extract shape offset
 	local origin = stripchars(origin, "translate()")
 	local xy = split(origin,"," )
 	local offset_x = tonumber(xy[1])
-	local offset_y = tonumber(xy[2])	
-	
+	local offset_y = tonumber(xy[2])
+
 	-- Create coordinate table (with polyline)
-	local coordinates = {}	
+	local coordinates = {}
 
 	for i=1, #svg_data do
 		local coord = tonumber(svg_data[i])
@@ -72,7 +58,7 @@ function M:read( xml_filename, position )
 	end
 
 	return coordinates
-	
+
 end
 
 return M
