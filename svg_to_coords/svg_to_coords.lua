@@ -28,7 +28,8 @@ function M:read( xml_filename, position )
 	-- Read xml
 	local handler = tree:new()
 	local parser = xml2lua.parser(handler)
-	parser:parse(xml2lua.loadFile(xml_filename))
+	local xml_file = sys.load_resource(xml_filename)
+	parser:parse(xml_file)
 
 	-- Read svg data
 	local svg_data_raw = parser.handler.root.svg.g.g.polyline._attr.points
