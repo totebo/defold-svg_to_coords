@@ -116,6 +116,7 @@ track_cpu = 0
 
 [project]
 compress_archive = 1
+custom_resources = game/
 title = Svg to Coordinates
 version = 1.0
 write_log = 0

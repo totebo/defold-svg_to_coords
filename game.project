@@ -10,6 +10,7 @@ height = 640
 
 [project]
 title = Svg to Coordinates
+custom_resources = game/
 
 [library]
 include_dirs = svg_to_coords
