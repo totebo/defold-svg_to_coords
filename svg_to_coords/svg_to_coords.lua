@@ -21,14 +21,14 @@ local handler = {}
 local cached_xml_files = {}
 
 function M:loadXml( xml_filename )
-	
+
 	-- Read xml
 	local handler = tree:new()
 	local parser = xml2lua.parser(handler)
 	local xml_file = sys.load_resource(xml_filename)
 	parser:parse( xml_file )
 	return parser
-	
+
 end
 
 
@@ -46,9 +46,10 @@ function M:read( xml_filename, position )
 	else
 		parser = M:loadXml( xml_filename )
 	end
-	
+
 	-- Read svg data
-	local svg_data_raw = parser.handler.root.svg.g.g.polyline._attr.points
+	--pprint( parser.handler.root.svg.g.g )
+	local svg_data_raw = parser.handler.root.svg.g.g.polygon._attr.points
 	local svg_data = split(svg_data_raw," " )
 	local width = parser.handler.root.svg._attr.width:gsub('px', '')
 	local height = parser.handler.root.svg._attr.height:gsub('px', '')
