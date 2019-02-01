@@ -49,7 +49,8 @@ function M:read( xml_filename, position )
 
 	-- Read svg data
 	--pprint( parser.handler.root.svg.g.g )
-	local svg_data_raw = parser.handler.root.svg.g.g.polygon._attr.points
+	--local svg_data_raw = parser.handler.root.svg.g.g.polygon._attr.points
+	local svg_data_raw = parser.handler.root.svg.g.g.polyline._attr.points
 	local svg_data = split(svg_data_raw," " )
 	local width = parser.handler.root.svg._attr.width:gsub('px', '')
 	local height = parser.handler.root.svg._attr.height:gsub('px', '')
