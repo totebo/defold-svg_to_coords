@@ -18,21 +18,10 @@ end
 local xml2lua = require "svg_to_coords.xml2lua"
 local tree = require("svg_to_coords.xmlhandler.tree")
 local handler = {}
---local cached_xml_files = {}
 local all_cached_coordinates = {}
-
 
 function M:read( xml_filename )
 
-
-	--[[
-	local cached_xml_file = cached_xml_files[xml_filename]
-	if cached_xml_file then
-		parser = cached_xml_file
-	else
-		parser = M:loadXml( xml_filename )
-	end
-	--]]
 	local coordinates
 	local cached_coordinates = all_cached_coordinates[xml_filename]
 	
@@ -42,15 +31,12 @@ function M:read( xml_filename )
 		
 	else
 
-		--local parser = M:loadXml( xml_filename )
-
 		-- Read xml
 		local handler = tree:new()
 		local parser = xml2lua.parser(handler)
 		local xml_file = sys.load_resource(xml_filename)
 		parser:parse( xml_file )
 
-				
 		--local svg_data_raw = parser.handler.root.svg.g.g.polygon._attr.points
 		local svg_data_raw = parser.handler.root.svg.g.g.polyline._attr.points
 		local svg_data = split(svg_data_raw," " )
@@ -84,6 +70,5 @@ function M:read( xml_filename )
 	return coordinates
 
 end
-
 
 return M
