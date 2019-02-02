@@ -5,8 +5,8 @@ local coordinates
 function init(self)
 	
 	local position = go.get_position( "go" )
-	coordinates = svg_to_coords:cache( "/game/Path.svg" )	
-	coordinates = svg_to_coords:read( "/game/Path.svg", position )
+	--coordinates = svg_to_coords:cache( "/game/Path.svg" )	
+	coordinates = svg_to_coords:read( "/game/Path.svg" )
 
 end
 
