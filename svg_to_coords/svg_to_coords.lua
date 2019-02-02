@@ -32,12 +32,14 @@ function M:loadXml( xml_filename )
 end
 
 
-function M:read( xml_filename, position )
+function M:read( xml_filename )
 
+	--[[
 	if position == nil then
 		position = vmath.vector3(0,0,0)
 	end
-
+	--]]
+	
 	local parser
 
 	local cached_xml_file = cached_xml_files[xml_filename]
@@ -68,9 +70,11 @@ function M:read( xml_filename, position )
 	for i=1, #svg_data do
 		local coord = tonumber(svg_data[i])
 		if i%2~=0 then
-			coord = position.x + offset_x + coord - width/2
+			--coord = position.x + offset_x + coord - width/2
+			coord = offset_x + coord - width/2
 		else
-			coord = position.y - offset_y - coord + height/2
+			--coord = position.y - offset_y - coord + height/2
+			coord = offset_y - coord + height/2
 		end
 		insert( coordinates, coord )
 	end
