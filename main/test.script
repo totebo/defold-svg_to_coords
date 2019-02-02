@@ -1,11 +1,11 @@
 local svg_to_coords = require "svg_to_coords.svg_to_coords"
 
 local coordinates
+local position 
 
 function init(self)
 	
-	local position = go.get_position( "go" )
-	--coordinates = svg_to_coords:cache( "/game/Path.svg" )	
+	position = go.get_position( "go" )
 	coordinates = svg_to_coords:read( "/game/Path.svg" )
 
 end
@@ -16,10 +16,10 @@ function update(self, dt)
 	for i=0, count do
 
 		local index = (i*2)+1
-		local x1 = coordinates[index]
-		local y1 = coordinates[index+1]
-		local x2 = coordinates[index+2]
-		local y2 = coordinates[index+3]
+		local x1 = position.x + coordinates[index]
+		local y1 = position.y + coordinates[index+1]
+		local x2 = position.x + coordinates[index+2]
+		local y2 = position.y + coordinates[index+3]
 
 		msg.post("@render:", "draw_line", { start_point = vmath.vector3( x1,y1,0 ), end_point = vmath.vector3( x2,y2,0 ), color = vmath.vector4(1, 0, 0, 1) } )
 
